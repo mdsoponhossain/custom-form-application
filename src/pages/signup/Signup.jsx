@@ -1,14 +1,34 @@
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form"
+import { useContext } from "react";
+import { AuthContext } from "../../context/ContextProvider";
 
 const Signup = () => {
+    const { handleSignup, handleUpdateUser } = useContext(AuthContext)
 
     const {
         register,
         handleSubmit,
     } = useForm()
 
-    const onSubmit = (data) => console.log(data)
+    const onSubmit = (data) => {
+        console.log(data);
+        const email = data.email;
+        const password = data.password;
+        const userInfo = {
+            displayName: data.name,
+            photoURL: data.photo,
+
+        }
+        handleSignup(email, password)
+            .then((userCredential) => {
+                console.log(userCredential.user)
+                handleUpdateUser(userInfo)
+                    .then(() => console.log('user profile updated'))
+                    .catch((error) => console.log(error))
+            })
+            .catch((error) => { console.log(error.message) })
+    }
     return (
         <div className="hero h-[calc(100vh-69px)]  bg-[#e7cb3c]">
             <div className="hero-content flex-col ">

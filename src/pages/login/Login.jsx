@@ -1,13 +1,22 @@
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/ContextProvider";
 
 const Login = () => {
+    const { handleSignIn } = useContext(AuthContext);
     const {
         register,
         handleSubmit,
     } = useForm()
 
-    const onSubmit = (data) => console.log(data)
+    const onSubmit = (data) => {
+        const email = data.email;
+        const password = data.password;
+        handleSignIn(email, password)
+            .then((currentUser) => console.log(currentUser.user))
+            .catch((error) => console.log(error))
+    }
     return (
         <div className="hero h-[calc(100vh-69px)]  bg-[#e7cb3c]">
             <div className="hero-content flex-col ">
