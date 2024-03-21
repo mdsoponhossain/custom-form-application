@@ -16,7 +16,7 @@ const Navbar = () => {
 
 
     const navItems = <>
-        <li className="lg:mr-2"><NavLink >All User</NavLink></li>
+        <li className="lg:mr-2"><NavLink to='/all/users'>All User</NavLink></li>
         <li className="lg:ml-2"><NavLink >Create form</NavLink></li>
     </>
 

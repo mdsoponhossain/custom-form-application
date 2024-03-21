@@ -2,9 +2,11 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form"
 import { useContext } from "react";
 import { AuthContext } from "../../context/ContextProvider";
+import useAxios from "../../hooks/useAxios/useAxios";
 
 const Signup = () => {
-    const { handleSignup, handleUpdateUser } = useContext(AuthContext)
+    const { handleSignup, handleUpdateUser } = useContext(AuthContext);
+    const axiosInstace = useAxios();
 
     const {
         register,
@@ -24,7 +26,11 @@ const Signup = () => {
             .then((userCredential) => {
                 console.log(userCredential.user)
                 handleUpdateUser(userInfo)
-                    .then(() => console.log('user profile updated'))
+                    .then(async () => {
+                        // console.log('user profile updated')
+                        const res = await axiosInstace.post('/users/create/user', data);
+                        console.log(res.data.success)
+                    })
                     .catch((error) => console.log(error))
             })
             .catch((error) => { console.log(error.message) })
