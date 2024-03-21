@@ -1,10 +1,26 @@
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
+import { AuthContext } from "../../context/ContextProvider";
 
 const Navbar = () => {
+    const { currentUser, handleLogout } = useContext(AuthContext);
+
+    const logoutUserFunc = () => {
+        handleLogout()
+            .then(() => { console.log('user is logged out') })
+            .catch((error) => { console.log(error) })
+    }
+
+
+
+
+
     const navItems = <>
-        <li><NavLink to='/signup'>Sign Up</NavLink></li>
-        <li><NavLink to='/login'>Log In</NavLink></li>
+        <li className="lg:mr-2"><NavLink to='/all/users'>All User</NavLink></li>
+        <li className="lg:ml-2"><NavLink >Create form</NavLink></li>
     </>
+
+
     return (
         <div className="navbar bg-base-100 lg:w-[1280px] lg:mx-auto">
             <div className="navbar-start">
@@ -24,7 +40,26 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <a className="btn">Button</a>
+                <div className="dropdown dropdown-end">
+                    {
+                        currentUser ? <>
+                            <img className="w-12 block lg:hidden rounded-2xl" src={currentUser?.photoURL} alt="" />
+                            <div tabIndex={0} role="button" className="btn m-1 hidden lg:block">
+                                <img className="w-12 rounded-2xl mt-[5px]" src={currentUser?.photoURL} alt="" />
+                            </div>
+                            <ul tabIndex={0} className="dropdown-content z-[1]  menu p-2 shadow bg-base-100 rounded-box w-52 hidden lg:block">
+                                <li onClick={logoutUserFunc}><a>Log out</a></li>
+                            </ul>
+
+                        </>
+                            :
+                            <>
+                                <NavLink to='/signup'>Sign Up</NavLink>
+                            </>
+                    }
+
+                </div>
+                <span className="ml-5">{currentUser?.displayName}</span>
             </div>
         </div>
     );
